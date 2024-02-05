@@ -16,7 +16,7 @@ public class SystemController {
     }
 
     @PostMapping("/farewell")
-    public String farewell(@RequestBody FieldsRequest request){
+    public String farewell(@RequestBody FieldsRequest request) {
 
         return "Farewell " + request.getName();
     }
