@@ -1,6 +1,6 @@
 package binjesytems.binjesusDemo.controller;
 
-import org.springframework.http.HttpStatus;
+import binjesytems.binjesusDemo.requestClasses.ContactRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
