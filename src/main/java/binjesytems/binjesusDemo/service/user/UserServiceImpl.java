@@ -1,8 +1,9 @@
-package binjesytems.binjesusDemo.service;
+package binjesytems.binjesusDemo.service.user;
 
 import binjesytems.binjesusDemo.entity.UserEntity;
 import binjesytems.binjesusDemo.repository.UserRepository;
-import binjesytems.binjesusDemo.requestClasses.CreateUserRequest;
+import binjesytems.binjesusDemo.bo.user.CreateUserRequest;
+import binjesytems.binjesusDemo.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

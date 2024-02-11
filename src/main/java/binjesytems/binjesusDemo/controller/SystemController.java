@@ -1,6 +1,6 @@
 package binjesytems.binjesusDemo.controller;
 
-import binjesytems.binjesusDemo.requestClasses.FieldsRequest;
+import binjesytems.binjesusDemo.bo.FieldsRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

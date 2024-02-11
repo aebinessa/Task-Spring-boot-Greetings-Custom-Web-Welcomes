@@ -1,4 +1,4 @@
-package binjesytems.binjesusDemo.requestClasses;
+package binjesytems.binjesusDemo.bo.user;
 
 public class CreateUserRequest {
     private String name;

@@ -1,11 +1,10 @@
 package binjesytems.binjesusDemo.controller;
 
-import binjesytems.binjesusDemo.requestClasses.CreateUserRequest;
-import binjesytems.binjesusDemo.service.UserService;
+import binjesytems.binjesusDemo.bo.user.CreateUserRequest;
+import binjesytems.binjesusDemo.bo.user.UpdateUserStatusRequest;
+import binjesytems.binjesusDemo.service.user.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 
@@ -17,9 +16,25 @@ public class UserController {
     }
 
     @PostMapping("/create-user")
-    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        userService.saveUser(createUserRequest);
-        return ResponseEntity.ok("user created successfully");
+    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest createUserRequest){
+        try {
+            userService.saveUser(createUserRequest);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok("User Created successfully");
+    }
+
+    @PutMapping("/update-user-status")
+    public ResponseEntity<String> updateUser(@RequestParam Long userId, @RequestBody UpdateUserStatusRequest updateUserStatusRequest){
+        try{
+            userService.updateUserStatus(userId, updateUserStatusRequest);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok("User Updated successfully");
+
     }
 
 }

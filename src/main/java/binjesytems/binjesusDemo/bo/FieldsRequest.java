@@ -1,4 +1,4 @@
-package binjesytems.binjesusDemo.requestClasses;
+package binjesytems.binjesusDemo.bo;
 
 public class FieldsRequest {
     private String name;
