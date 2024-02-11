@@ -1,7 +1,8 @@
 package binjesytems.binjesusDemo.entity;
 
+import binjesytems.binjesusDemo.Enums.Status;
+
 import javax.persistence.*;
-import javax.transaction.Status;
 
 @Table(name = "bank_user")
 @Entity
@@ -97,4 +98,6 @@ public class UserEntity {
     public void setRoles(RoleEntity roles) {
         this.roles = roles;
     }
+
+
 }

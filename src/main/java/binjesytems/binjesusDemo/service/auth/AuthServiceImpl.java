@@ -1,6 +1,8 @@
 package binjesytems.binjesusDemo.service.auth;
 
 
+import binjesytems.binjesusDemo.Enums.Roles;
+import binjesytems.binjesusDemo.Enums.Status;
 import binjesytems.binjesusDemo.bo.auth.AuthenticationResponse;
 import binjesytems.binjesusDemo.bo.auth.CreateLoginRequest;
 import binjesytems.binjesusDemo.bo.auth.CreateSignupRequest;
@@ -19,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
@@ -32,7 +35,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     public AuthServiceImpl(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JWTUtil jwtUtil, RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -44,15 +46,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void signup(CreateSignupRequest createSignupRequest) {
-        RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setTitle(Roles.USER);
-        roleRepository.save(roleEntity);
-        UserEntity user = new UserEntity();
+        RoleEntity roleEntity= roleRepository.findRoleEntityByTitle(Roles.user.name())
+                .orElseThrow(() -> new BodyGuardException("no Roles Found"));;
+        UserEntity user= new UserEntity();
         user.setName(createSignupRequest.getName());
         user.setUsername(createSignupRequest.getUsername());
         user.setPhoneNumber(createSignupRequest.getPhoneNumber());
         user.setEmail(createSignupRequest.getEmail());
-        user.setRoles(roleRepository.findByTitle(Roles.USER));
+        user.setRoles(roleEntity);
         user.setStatus(Status.ACTIVE);
         user.setPassword(bCryptPasswordEncoder.encode(createSignupRequest.getPassword()));
         userRepository.save(user);
@@ -60,15 +61,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthenticationResponse login(CreateLoginRequest createLoginRequest) {
-        requiredNonNull(createLoginRequest.getUsername(), "username");
-        requiredNonNull(createLoginRequest.getPassword(), "password");
+        requiredNonNull(createLoginRequest.getUsername(),"username");
+        requiredNonNull(createLoginRequest.getPassword(),"password");
 
-        String username = createLoginRequest.getUsername().toLowerCase();
-        String password = createLoginRequest.getPassword();
+        String username= createLoginRequest.getUsername().toLowerCase();
+        String password= createLoginRequest.getPassword();
 
         authentication(username, password);
 
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        CustomUserDetails userDetails= userDetailsService.loadUserByUsername(username);
 
         String accessToken = jwtUtil.generateToken(userDetails);
 
@@ -76,28 +77,28 @@ public class AuthServiceImpl implements AuthService {
         response.setId(userDetails.getId());
         response.setUsername(userDetails.getUsername());
         response.setRole(userDetails.getRole());
-        response.setToken("Bearer " + accessToken);
+        response.setToken("Bearer "+accessToken);
         return response;
     }
 
     @Override
     public void logout(LogoutResponse logoutResponse) {
-        requiredNonNull(logoutResponse.getToken(), "token");
+        requiredNonNull(logoutResponse.getToken(),"token");
     }
 
-    private void requiredNonNull(Object obj, String name) {
-        if (obj == null || obj.toString().isEmpty()) {
+    private void requiredNonNull(Object obj, String name){
+        if(obj == null || obj.toString().isEmpty()){
             throw new BodyGuardException(name + " can't be empty");
         }
     }
 
-    private void authentication(String username, String password) {
+    private void authentication(String username, String password){
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (BodyGuardException e) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+        }catch (BodyGuardException e){
             throw new BodyGuardException("Incorrect password");
-        } catch (AuthenticationServiceException e) {
-            throw new UserNotFoundException("Incorrect username");
+        }catch (AuthenticationServiceException e){
+            throw  new UserNotFoundException("Incorrect username");
         }
     }
 }
