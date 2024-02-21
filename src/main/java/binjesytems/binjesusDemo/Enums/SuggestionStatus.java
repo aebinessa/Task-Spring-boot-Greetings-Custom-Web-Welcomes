@@ -1,2 +1,6 @@
-package binjesytems.binjesusDemo.Enums;public enum SuggestionStatus {
+package binjesytems.binjesusDemo.Enums;
+
+public enum SuggestionStatus {
+    CREATE, REMOVE
+
 }

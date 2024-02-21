@@ -1,12 +1,15 @@
 package binjesytems.binjesusDemo.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import binjesytems.binjesusDemo.Enums.SuggestionStatus;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "guest")
 public class GuestSuggestionEntity {
 
     @Id
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -28,4 +31,28 @@ public class GuestSuggestionEntity {
     public void setSuggestionText(String suggestionText) {
         this.suggestionText = suggestionText;
     }
+
+    @Enumerated(EnumType.STRING)
+    private SuggestionStatus status;
+
+    public SuggestionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SuggestionStatus status) {
+        this.status = status;
+    }
+
+    public GuestSuggestionEntity() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
+
+
