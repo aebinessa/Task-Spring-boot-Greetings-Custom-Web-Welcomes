@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GuestSuggestionServiceImpl implements GuestSuggestionService {
@@ -16,11 +17,15 @@ public class GuestSuggestionServiceImpl implements GuestSuggestionService {
 
     @Override
     public List<GuestSuggestionEntity> findAllCreatedSuggestions() {
-        return suggestionRepository.findByStatus(SuggestionStatus.CREATE);
+        return suggestionRepository.findAll().stream()
+                .filter(s -> s.getStatus() == SuggestionStatus.CREATE)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<GuestSuggestionEntity> findAllRemovedSuggestions() {
-        return suggestionRepository.findByStatus(SuggestionStatus.REMOVE);
+        return suggestionRepository.findAll().stream()
+                .filter(s -> s.getStatus() == SuggestionStatus.REMOVE)
+                .collect(Collectors.toList());
     }
 }

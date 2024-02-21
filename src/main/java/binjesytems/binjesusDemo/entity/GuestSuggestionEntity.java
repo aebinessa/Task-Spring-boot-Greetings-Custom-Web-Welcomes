@@ -43,7 +43,7 @@ public class GuestSuggestionEntity {
         this.status = status;
     }
 
-    public GuestSuggestionEntity() {
+    public GuestSuggestionEntity(SuggestionStatus remove) {
     }
 
     public long getId() {

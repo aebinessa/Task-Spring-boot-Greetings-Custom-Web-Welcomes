@@ -5,6 +5,9 @@ import binjesytems.binjesusDemo.entity.GuestSuggestionEntity;
 import java.util.List;
 
 public interface GuestSuggestionService {
-    static List<GuestSuggestionEntity> findAllCreatedSuggestions();
-    static List<GuestSuggestionEntity> findAllRemovedSuggestions();
+
+      static List<GuestSuggestionEntity> findAllCreatedSuggestions();
+
+
+     static List<GuestSuggestionEntity> findAllRemovedSuggestions();
 }
